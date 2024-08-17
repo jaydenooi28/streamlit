@@ -3,7 +3,7 @@ import yfinance as yf
 import pytz
 import pandas as pd
 from datetime import datetime
-# from plotly import graph_objs as go
+from plotly import graph_objs as go
 import numpy as np
 # np.float_ = np.float64
 from prophet import Prophet
