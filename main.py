@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import datetime
 from plotly import graph_objs as go
 import numpy as np
-# np.float_ = np.float64
+np.float_ = np.float64
 from prophet import Prophet
 from prophet.plot import plot_plotly
 from prophet.diagnostics import cross_validation
