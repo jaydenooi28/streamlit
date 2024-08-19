@@ -69,21 +69,27 @@ st.markdown(
 # malaysia_tz = pytz.timezone('Asia/Kuala_Lumpur')
 ticker = '8907.KL'
 start_date = st.sidebar.date_input("Start Date", datetime(2001, 1, 1))  # (year, month, day)
-end_date = datetime.today().strftime('%Y-%m-%d')
-n_years = st.sidebar.slider("Years of prediction:",1,4)
+end_date = st.sidebar.date_input("End Date", datetime.today())
+
+
+end_date = end_date.strftime('%Y-%m-%d')
+n_years = st.sidebar.slider("Years of prediction:",1,10)
 period = n_years * 365
 
 
 df = get_stock_data(ticker, start_date, end_date)
 last_close,change,pct_change,high,low,volume,historical_high, historical_low,historical_high_date,historical_low_date = calculate_metrics(df)
-
+historical_low_date = historical_low_date.strftime('%Y-%m-%d')
+historical_high_date = historical_high_date.strftime('%Y-%m-%d')
 st.metric(label=f"{ticker} Last Price", value=f"{last_close:.2f} MYR", delta=f"{change:.2f} ({pct_change:.2f}%)")
 col1,col2,col3 = st.columns(3)
 col1.metric("High", f"{high:.2f} MYR")
 col2.metric("Low", f"{low:.2f} MYR")
 col3.metric("Volume", f"{volume:,}") 
 st.sidebar.metric("Historical High:",f"{historical_high:.2f} MYR")
+st.sidebar.metric("Historical High date:",f"{historical_high_date} ")
 st.sidebar.metric("Historical Low:",f"{historical_low:.2f} MYR")
+st.sidebar.metric("Historical Low date:",f"{historical_low_date} ")
 
 st.write(f'Historical  Raw data for EG Industries:')
 st.write(f"Dataset Shape: {df.shape}")
