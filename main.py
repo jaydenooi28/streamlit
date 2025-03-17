@@ -68,8 +68,8 @@ def calculate_metrics(df):
 
     historical_high_date = df[df['Close'] == historical_high].index[0] if not df.empty else None
     if not df.empty and 'Close' in df.columns:
-    historical_low = df['Close'].min()
-    historical_low_date = df[df['Close'] == historical_low].index[0] if not df[df['Close'] == historical_low].empty else None
+        historical_low = df['Close'].min()
+        historical_low_date = df[df['Close'] == historical_low].index[0] if not df[df['Close'] == historical_low].empty else None
 
     if isinstance(historical_low_date, pd.Timestamp):
         historical_low_date = historical_low_date.strftime('%Y-%m-%d')
