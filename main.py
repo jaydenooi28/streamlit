@@ -40,20 +40,37 @@ def plot_raw_data(df):
         st.error("The 'Date' column is missing from the dataset.")
 
 def calculate_metrics(df):
+    if df.empty:
+        st.error("Error: The DataFrame is empty. No data available.")
+        return None, None, None, None, None, None, None, None, None, None  
+
+    if 'Close' not in df.columns:
+        st.error("Error: The column 'Close' is missing.")
+        return None, None, None, None, None, None, None, None, None, None  
+
+    # Ensure there is at least one row before accessing iloc[0]
+    if len(df) < 1:
+        st.error("Error: Not enough rows in DataFrame.")
+        return None, None, None, None, None, None, None, None, None, None  
+
     last_close = df['Close'].iloc[0]
-    prev_close = df['Close'].iloc[1]
-    change = last_close - prev_close
-    pct_change = (change / prev_close) * 100 if prev_close != 0 else None
-    high = df['High'].iloc[0]
-    low = df['Low'].iloc[0]
-    volume = df['Volume'].iloc[0]
 
-    historical_high = df['High'].max()
-    historical_low = df['Low'].min()
-    historical_high_date = df[df['High'] == historical_high]['Date'].iloc[0]
-    historical_low_date = df[df['Low'] == historical_low]['Date'].iloc[0]
+    # Ensure at least two rows before calculating change
+    change = df['Close'].iloc[0] - df['Close'].iloc[1] if len(df) > 1 else None
+    pct_change = (change / df['Close'].iloc[1] * 100) if len(df) > 1 else None
 
-    return last_close, change, pct_change, high, low, volume,historical_high, historical_low,historical_high_date,historical_low_date
+    high = df['Close'].max()
+    low = df['Close'].min()
+    volume = df['Volume'].sum() if 'Volume' in df.columns else None
+
+    historical_high = df['Close'].max()
+    historical_low = df['Close'].min()
+
+    historical_high_date = df[df['Close'] == historical_high].index[0] if not df.empty else None
+    historical_low_date = df[df['Close'] == historical_low].index[0] if not df.empty else None
+
+    return last_close, change, pct_change, high, low, volume, historical_high, historical_low, historical_high_date, historical_low_date
+
 
 auto_refresh_interval = 10 * 60  # 10 minutes in seconds
 st.markdown(
