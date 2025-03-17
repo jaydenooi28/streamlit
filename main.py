@@ -75,8 +75,8 @@ def calculate_metrics(df):
         historical_low_date = historical_low_date.strftime('%Y-%m-%d')
     else:
         historical_low_date = "N/A"
-else:
-    historical_low_date = "N/A"
+    else:
+        historical_low_date = "N/A"
 
     
 
